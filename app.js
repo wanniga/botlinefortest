@@ -1,59 +1,50 @@
 var request = require('request')
 const thtime = require("./thtime")
+var TOKEN = process.env.BOT_TOKEN1
 
-var TOKEN = process.env.BOT_TOKEN5
+setInterval(() => alert(), 10000);
 
-setInterval(() => timechk(), 10000);
-
-function timechk() {
-    aler1()
-    aler2()
-    aler3()
-}
-
-function aler1() {
+function alert() {
     var h = thtime().h
     var m = thtime().m
     var s = thtime().s
+    var day = thtime().day
+    var days = thtime().days
+    
+    /**แต่งเวลาให้สวย */
+    if (h < 10) {
+    h = "0" + h;
+    }
+    if (m < 10) {
+    m = "0" + m;
+    }
+    if (s < 10) {
+    s = "0" + s;
+    }
+    
+    var msgz1 = 'เตรียมตัว15นาทีบอสจะเกิดแล้ว \n** '+days+' : เวลา '+h+':'+m+' น. **'
+    var msgz2 = 'บอสโลกเกิดจ้าาา ลุยยย !! \n** '+days+' : เวลา '+h+':'+m+' น. **'
+    var msgz3 = 'กิจกรรมลอกข้อสอบกิล \n** '+days+' : เวลา '+h+':'+m+' น. **' 
+    var msgz4 = 'ถึงเวลาอัพเดทรอบ 11โมง \n** '+days+' : เวลา '+h+':'+m+' น. **'
+    
 
-    // if (m ==  && s <= 10) { sendText() }                   //แก้เวลาตรงนี้ สำหรับข้อความ "บอสโลกเกิดแล้ว"  แจ้งเตือน .00 น
-    if (h == 08 && m == 26 && s <= 10) { sendText() }        //แจ้งเตือนตอนเวลา 17.00 น
+    if (h == 11 && m == 00 && s <= 10) { 
+        sendText(msgz4)                             //อัพเดทเครื่อง POS
+    } 
+    if (h == 12 && m == 15 && s <= 10) {            //เวลา
+         sendText(msgz1)                            //อีก 15 นาที บอสเกิดแล้ว
+        }    
 
-}
-
-function aler2() {
-    var h = thtime().h
-    var m = thtime().m
-    var s = thtime().s
-
-    // if (m == 42 && s <= 10) { sendText15() }                //แก้เวลาตรงนี้ สำหรับข้อความ "อีก 15 บอสโลกเกิด"   แจ้งเตือน .45 น
-    if (h == 12 && m == 15 && s <= 10) { sendText15() }     //แจ้งเตือนตอนเวลา 16.45 น
-
-}
-
-function sendText() {
-    request({
-        method: 'POST',
-        uri: 'https://notify-api.line.me/api/notify',
-        header: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        auth: {
-            bearer: TOKEN, //token
-        },
-        form: {
-            message: 'บอสโลกเกิดจ้าาาาาา !!!', //ข้อความที่จะส่ง
-        },
-    }, (err, httpResponse, body) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(body)
+    if (h == 12 && m == 30 && s <= 10) {
+         sendText(msgz2)                            //บอสโลกเกิดแล้ว
         }
-    })
+
+    if (day == 1 && h == 19 && m == 30 && s <= 10) { 
+        sendText(msgz3)                             //ลอกข้อสอบ
+    } 
 }
 
-function sendText15() {
+function sendText(msgz) {
     request({
         method: 'POST',
         uri: 'https://notify-api.line.me/api/notify',
@@ -64,7 +55,7 @@ function sendText15() {
             bearer: TOKEN, //token
         },
         form: {
-            message: 'อีก 15 นาที บอสโลกจะเกิดแล้วนะ !!!', //ข้อความที่จะส่ง
+            message: msgz, //ข้อความที่จะส่ง
         },
     }, (err, httpResponse, body) => {
         if (err) {
